@@ -8,6 +8,6 @@ import { Message } from './messages/message';
   templateUrl: './app.component.html'
 })
 export class AppComponent  { 
-  message: Message = new Message("message", "alb");
+  
   }
  
