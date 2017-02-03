@@ -11,7 +11,7 @@ export class SigninComponent {
 
     onSubmit() {
         console.log(this.myForm);
-        //this.myForm.reset();
+        this.myForm.reset();
     }
 
     ngOnInit() {
