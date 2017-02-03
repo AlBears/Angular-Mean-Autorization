@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs/Observable';
@@ -19,13 +19,23 @@ export class MessageService {
         headers.append('Content-Type', 'application/json');
         const body = JSON.stringify(message);
         return this._http.post('/messages', body, { headers })
-            .map((response) => response.json() )
-            .catch((error) => Observable.throw(error.json()));
+            .map((response: Response) => response.json() )
+            .catch((error: Response) => Observable.throw(error.json()));
         
     }
 
     getMessages() {
-        return this.messages;
+        return this._http.get('/messages')
+            .map((response: Response) => {
+                const messages = response.json().messages;
+                let transformedMessages: Message[] = [];
+                for (let message of messages) {
+                    transformedMessages.push(new Message(message.content, 'Dummy', message._id, null));
+                }
+                this.messages = transformedMessages;
+                return transformedMessages;
+            })
+            .catch((error: Response) => Observable.throw(error.json()));
     }
 
     deleteMessage(message: Message) {

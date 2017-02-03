@@ -15,5 +15,13 @@ router.post('/', (req, res, next) => {
     });
 });
 
+router.get('/', (req, res) => {
+    Message.find().then((messages) => {
+        res.send({ messages });
+    }, (e) => {
+        res.status(400).send(e);
+    })
+});
+
 
 module.exports = router;
