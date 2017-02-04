@@ -41,6 +41,9 @@ export class MessageService {
 
     deleteMessage(message: Message) {
         this.messages.splice(this.messages.indexOf(message), 1);
+        return this._http.delete(`/api/messages/${message.messageId}`)
+            .map((response: Response) => response.json())
+            .catch((error: Response) => Observable.throw(error.json()));
     }
 
     editMessage(message: Message) {

@@ -44,5 +44,23 @@ router.patch('/:id', (req, res) => {
     });
 });
 
+router.delete('/:id', (req, res) => {
+    var id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    Message.findByIdAndRemove(id).then((message) => {
+        if (!message) {
+            return res.status(404).send();
+        }
+
+        res.send(message);
+    }).catch((e) => {
+        res.status(400).send(e);
+    });
+});
+
 
 module.exports = router;
