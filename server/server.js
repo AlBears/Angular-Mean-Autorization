@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/api/messages', messages);
 app.use('/', index);
-//app.use('/users', users);
+app.use('/api/users', users);
 
 // catch 404 and forward to error handler
 //avoid error when frontend route entered to comand line
