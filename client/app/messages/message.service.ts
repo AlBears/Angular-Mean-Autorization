@@ -48,7 +48,12 @@ export class MessageService {
     }
 
     updateMessage(message: Message) {
-
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        const body = JSON.stringify(message);
+        return this._http.patch(`/api/messages/${message.messageId}`, body, { headers })
+            .map((response: Response) => response.json() )
+            .catch((error: Response) => Observable.throw(error.json()));
     }
 
 }

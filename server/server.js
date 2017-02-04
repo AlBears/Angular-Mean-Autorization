@@ -26,6 +26,12 @@ app.use('/api/messages', messages);
 app.use('/', index);
 //app.use('/users', users);
 
+// catch 404 and forward to error handler
+//avoid error when frontend route entered to comand line
+app.use(function (req, res, next) {
+    return res.render('index.html');
+});
+
 app.listen(3000, function(){
     console.log('Server started on port 3000');
 });
