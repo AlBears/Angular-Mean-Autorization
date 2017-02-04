@@ -32,6 +32,7 @@ export class MessageComponent  {
 
   onEdit(){
       this.messageService.editMessage(this.message);
+      console.log(this.message);
   }
 
   onDelete() {

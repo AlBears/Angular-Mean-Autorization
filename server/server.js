@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 
-app.use('/messages', messages);
+app.use('/api/messages', messages);
 app.use('/', index);
 //app.use('/users', users);
 

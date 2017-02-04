@@ -19,14 +19,14 @@ export class MessageService {
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         const body = JSON.stringify(message);
-        return this._http.post('/messages', body, { headers })
+        return this._http.post('/api/messages', body, { headers })
             .map((response: Response) => response.json() )
             .catch((error: Response) => Observable.throw(error.json()));
         
     }
 
     getMessages() {
-        return this._http.get('/messages')
+        return this._http.get('/api/messages')
             .map((response: Response) => {
                 const messages = response.json().messages;
                 let transformedMessages: Message[] = [];
