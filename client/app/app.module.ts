@@ -14,6 +14,8 @@ import { LogoutComponent } from './auth/logout.component';
 import { SigninComponent } from './auth/signin.component';
 import { SignupComponent } from './auth/signup.component';
 
+import { AuthService } from './auth/auth.service';
+
 
 import { AppRoutingModule } from './app.routing';
 
@@ -37,6 +39,7 @@ import { AppRoutingModule } from './app.routing';
                   SigninComponent,
                   SignupComponent
                 ],
+  providers:    [ AuthService ],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }
