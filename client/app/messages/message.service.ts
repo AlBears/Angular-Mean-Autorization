@@ -15,12 +15,18 @@ export class MessageService {
 
     addMessage(message:Message) {
 
-        this.messages.push(message);
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        const body = JSON.stringify(message);
+        const token = localStorage.getItem('token');
+        const headers = new Headers({'Accept': 'application/json'});
+        headers.append('Content-type', 'application/json');
+        headers.append('x-auth', token);
+        const body = JSON.stringify(message); 
         return this._http.post('/api/messages', body, { headers })
-            .map((response: Response) => response.json() )
+            .map((response: Response) => {
+                const result = response.json();
+                const message = new Message(result.obj.content, 'Dummy', result.obj._id, null);
+                this.messages.push(message);
+                return message;
+            })
             .catch((error: Response) => Observable.throw(error.json()));
         
     }
@@ -40,9 +46,15 @@ export class MessageService {
     }
 
     deleteMessage(message: Message) {
-        this.messages.splice(this.messages.indexOf(message), 1);
-        return this._http.delete(`/api/messages/${message.messageId}`)
-            .map((response: Response) => response.json())
+        
+        const token = localStorage.getItem('token');
+        const headers = new Headers({'Accept': 'application/json'});
+        headers.append('x-auth', token);
+        return this._http.delete(`/api/messages/${message.messageId}`, { headers })
+            .map((response: Response) => {
+                this.messages.splice(this.messages.indexOf(message), 1);
+                return response.json();
+            })
             .catch((error: Response) => Observable.throw(error.json()));
     }
 
@@ -51,8 +63,10 @@ export class MessageService {
     }
 
     updateMessage(message: Message) {
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
+        const token = localStorage.getItem('token');
+        const headers = new Headers({'Accept': 'application/json'});
+        headers.append('Content-type', 'application/json');
+        headers.append('x-auth', token);
         const body = JSON.stringify(message);
         return this._http.patch(`/api/messages/${message.messageId}`, body, { headers })
             .map((response: Response) => response.json() )

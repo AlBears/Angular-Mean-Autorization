@@ -33,7 +33,7 @@ router.post('/', authenticate, (req, res, next) => {
 
 });
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', authenticate, (req, res) => {
     var id = req.params.id;
     var body = _.pick(req.body, 'content');
 
@@ -46,13 +46,13 @@ router.patch('/:id', (req, res) => {
             return res.status(404).send();
         }
 
-        res.send({ message });
+        res.send({ text: 'Message updated successfully', message });
     }).catch((e) => {
         res.status(400).send();
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authenticate, (req, res) => {
     var id = req.params.id;
 
     if (!ObjectID.isValid(id)) {
