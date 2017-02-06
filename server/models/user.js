@@ -38,7 +38,7 @@ schema.statics.findByCredentials = function (email, password) {
 
     return User.findOne({ email }).then((user) => {
         if (!user) {
-            return Promise.reject();
+            return Promise.reject('User with provided email does not exist');
         }
 
         return new Promise((resolve, reject) => {
@@ -46,7 +46,7 @@ schema.statics.findByCredentials = function (email, password) {
                 if (res) {
                     resolve(user);
                 } else {
-                    reject();
+                    reject('Your password is incorrect. Please try again!');
                 }
             });
         })
@@ -54,15 +54,11 @@ schema.statics.findByCredentials = function (email, password) {
 };
 
 schema.methods.generateToken = function () {
-    var user = this;
-    return new Promise((resolve, reject) => {
-        const token = jwt.sign({ user }, 'secret', { expiresIn: 7200 });
-        if (token) {
-            resolve(token)
-        } else {
-            reject();
-        }
-    })
+    const user = this;
+    const token = jwt.sign({ user }, 'secret', { expiresIn: 7200 });
+    if (token)
+    return Promise.resolve(token);
+    
 };
 
 schema.pre('save', function(next) {
