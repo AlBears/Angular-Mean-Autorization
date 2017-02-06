@@ -53,6 +53,20 @@ schema.statics.findByCredentials = function (email, password) {
     })
 };
 
+schema.statics.findByToken = function(token) {
+    var User = this;
+    var decoded;
+
+    try {
+        decoded = jwt.verify(token, 'secret');
+    } catch (e) {
+        return Promise.reject();
+    }
+    return User.findOne({ 
+        _id:decoded.user._id
+    });
+};
+
 schema.methods.generateToken = function () {
     const user = this;
     const token = jwt.sign({ user }, 'secret', { expiresIn: 7200 });

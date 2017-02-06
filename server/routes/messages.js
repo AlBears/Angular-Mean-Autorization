@@ -2,20 +2,11 @@ var express = require('express');
 var router = express.Router();
 var _ = require('lodash');
 const { ObjectID } = require('mongodb');
+var jwt = require('jsonwebtoken');
 
 var Message = require('../models/message');
 
-router.post('/', (req, res, next) => {
-    var message = new Message({
-        content: req.body.content
-    });
-
-    message.save().then((doc) => {
-        res.send(doc);
-    }, (e) => {
-        res.status(400).send(e);
-    });
-});
+var { authenticate } = require('../middleware/authenticate');
 
 router.get('/', (req, res) => {
     Message.find().then((messages) => {
@@ -23,6 +14,23 @@ router.get('/', (req, res) => {
     }, (e) => {
         res.status(400).send(e);
     })
+});
+
+router.post('/', authenticate, (req, res, next) => {
+    var message = new Message({
+        content: req.body.content,
+        user: req.user
+    });
+
+    message.save().then((result) => {
+        res.status(201).json({ 
+            message: 'Saved message',
+            obj: result
+        });
+    }, (e) => {
+        res.status(400).send(e);
+    });
+
 });
 
 router.patch('/:id', (req, res) => {
