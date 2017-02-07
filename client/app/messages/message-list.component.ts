@@ -25,7 +25,6 @@ export class MessageListComponent implements OnInit {
             (messages) => this.messages = messages
            
         );
-        console.log(this.messages)
         
     };
 

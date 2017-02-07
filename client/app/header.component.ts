@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     moduleId: module.id,
@@ -13,16 +13,20 @@ import { Component, OnInit } from '@angular/core';
 			        <li routerLinkActive = "active">
                         <a [routerLink] = "['/auth']">Authentication</a>
                     </li>
+                    <li class="pull-right" *ngIf="fetchUser()">
+                        <a>Welcome: {{fetchUser()}}</a>
+                    </li>
                 </ul>
             </nav>
         </header>
     `
 })
-export class HeaderComponent implements OnInit  {
+export class HeaderComponent {
   
     constructor() { }
 
-   ngOnInit() {
-    
-   }
+    fetchUser() {
+        return localStorage.getItem('username');
+    }
+
 }

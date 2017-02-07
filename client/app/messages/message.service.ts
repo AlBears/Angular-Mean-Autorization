@@ -41,7 +41,6 @@ export class MessageService {
                 const messages = response.json().messages;
                 let transformedMessages: Message[] = [];
                 for (let message of messages) {
-                    console.log(messages);
                     transformedMessages.push(new Message(
                         message.content, 
                         message.user.firstName, 

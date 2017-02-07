@@ -21,6 +21,7 @@ export class SigninComponent {
                 (response) => {
                     localStorage.setItem('token', response.token);
                     localStorage.setItem('userId', response.userId);
+                    localStorage.setItem('username', response.name);
                     this.router.navigateByUrl('/');
                 },
                 error => console.error(error)
