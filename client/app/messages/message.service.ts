@@ -23,7 +23,7 @@ export class MessageService {
         return this._http.post('/api/messages', body, { headers })
             .map((response: Response) => {
                 const result = response.json();
-                const message = new Message(result.obj.content, 'Dummy', result.obj._id, null);
+                const message = new Message(result.obj.content, result.obj.user.firstName, result.obj._id, null);
                 this.messages.push(message);
                 return message;
             })
@@ -37,7 +37,8 @@ export class MessageService {
                 const messages = response.json().messages;
                 let transformedMessages: Message[] = [];
                 for (let message of messages) {
-                    transformedMessages.push(new Message(message.content, 'Dummy', message._id, null));
+                    console.log(messages);
+                    transformedMessages.push(new Message(message.content, message.user.firstName, message._id, null));
                 }
                 this.messages = transformedMessages;
                 return transformedMessages;

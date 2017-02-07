@@ -34,7 +34,8 @@ router.post('/login', (req, res) => {
             res.status(200).json({
                 message: 'Successfully logged in',
                 token,
-                userId: user._id
+                userId: user._id,
+                name: user.firstName
             });
         });
     }).catch((e) => {

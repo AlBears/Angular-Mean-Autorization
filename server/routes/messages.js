@@ -9,7 +9,7 @@ var Message = require('../models/message');
 var { authenticate } = require('../middleware/authenticate');
 
 router.get('/', (req, res) => {
-    Message.find().then((messages) => {
+    Message.find().populate('user', 'firstName').then((messages) => {
         res.send({ messages });
     }, (e) => {
         res.status(400).send(e);
@@ -35,15 +35,16 @@ router.post('/', authenticate, (req, res, next) => {
 
 router.patch('/:id', authenticate, (req, res) => {
     var id = req.params.id;
+    var userId = req.user._id;
     var body = _.pick(req.body, 'content');
 
     if (!ObjectID.isValid(id)){
     return res.status(404).send();
      }
 
-    Message.findByIdAndUpdate(id, { $set: body }, { new: true }).then((message) => {
+    Message.findOneAndUpdate({_id: id, user: userId}, { $set: body }, { new: true }).then((message) => {
         if (!message) {
-            return res.status(404).send();
+            return res.status(404).send("You can't update messages, created by other users");
         }
 
         res.send({ text: 'Message updated successfully', message });
@@ -54,14 +55,15 @@ router.patch('/:id', authenticate, (req, res) => {
 
 router.delete('/:id', authenticate, (req, res) => {
     var id = req.params.id;
+    var userId = req.user._id;
 
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
 
-    Message.findByIdAndRemove(id).then((message) => {
+    Message.findOneAndRemove({_id:id, user: userId}).then((message) => {
         if (!message) {
-            return res.status(404).send();
+            return res.status(404).send("You can't remove messages, created by other users");
         }
 
         res.send(message);
