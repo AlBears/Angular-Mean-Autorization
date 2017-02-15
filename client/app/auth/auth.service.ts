@@ -5,18 +5,22 @@ import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs/Observable';
 
 import { User } from './user';
+import { ErrorService } from '../errors/error.service';
 
 @Injectable()
 export class AuthService {
 
-    constructor(private _http: Http) { }
+    constructor(private _http: Http, private errorService: ErrorService) { }
 
     signup(user: User) {
         const body = JSON.stringify(user);
         const headers = new Headers({ 'Content-Type' : 'application/json' });
         return this._http.post('/api/users', body, { headers })
             .map((response: Response) => response.json())
-            .catch((error: Response) => Observable.throw(error.json()))
+            .catch((error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json())
+            });
     }
 
     signin(user: User) {
@@ -24,7 +28,10 @@ export class AuthService {
         const headers = new Headers({ 'Content-Type' : 'application/json' });
         return this._http.post('/api/users/login', body, { headers })
             .map((response: Response) => response.json())
-            .catch((error: Response) => Observable.throw(error.json()))
+            .catch((error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json())
+            });
     }
 
     logout() {

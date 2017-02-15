@@ -13,7 +13,10 @@ router.post('/', (req, res, next) => {
     user.save().then((doc) => {
         res.send(doc);
     }, (e) => {
-        res.status(400).send(e);
+        res.status(400).json({
+            title: 'SignIn Failure',
+            error: { message: 'Email is already in use' }
+        });
     });
     
 });
@@ -39,7 +42,10 @@ router.post('/login', (req, res) => {
             });
         });
     }).catch((e) => {
-        res.status(400).send(e);
+        res.status(400).json({
+            title: "Login failed",
+            error: { message: "Wrong login data. Please check your email and/or password!" }
+        });
     });
 });
 

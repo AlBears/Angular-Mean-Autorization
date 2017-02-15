@@ -16,6 +16,7 @@ import { SignupComponent } from './auth/signup.component';
 import { ErrorComponent } from './errors/error.component';
 
 import { AuthService } from './auth/auth.service';
+import { ErrorService } from './errors/error.service';
 
 
 import { AppRoutingModule } from './app.routing';
@@ -41,7 +42,7 @@ import { AppRoutingModule } from './app.routing';
                   SignupComponent,
                   ErrorComponent
                 ],
-  providers:    [ AuthService ],
+  providers:    [ AuthService, ErrorService ],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

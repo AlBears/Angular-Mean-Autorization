@@ -6,10 +6,11 @@ import {Observable} from 'rxjs/Observable';
 
 
 import { Message } from './message';
+import { ErrorService } from '../errors/error.service';
 
 @Injectable()
 export class MessageService {
-    constructor(private _http: Http){}
+    constructor(private _http: Http, private errorService: ErrorService){}
     private messages: Message[] = [];
     messageIsEdit = new EventEmitter<Message>();
 
@@ -31,7 +32,10 @@ export class MessageService {
                 this.messages.push(message);
                 return message;
             })
-            .catch((error: Response) => Observable.throw(error.json()));
+            .catch((error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json())
+            });
         
     }
 
@@ -51,7 +55,10 @@ export class MessageService {
                 this.messages = transformedMessages;
                 return transformedMessages;
             })
-            .catch((error: Response) => Observable.throw(error.json()));
+            .catch((error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json())
+            });
     }
 
     deleteMessage(message: Message) {
@@ -64,7 +71,10 @@ export class MessageService {
                 this.messages.splice(this.messages.indexOf(message), 1);
                 return response.json();
             })
-            .catch((error: Response) => Observable.throw(error.json()));
+            .catch((error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json())
+            });
     }
 
     editMessage(message: Message) {
@@ -79,7 +89,10 @@ export class MessageService {
         const body = JSON.stringify(message);
         return this._http.patch(`/api/messages/${message.messageId}`, body, { headers })
             .map((response: Response) => response.json() )
-            .catch((error: Response) => Observable.throw(error.json()));
+            .catch((error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json())
+            });
     }
 
 }

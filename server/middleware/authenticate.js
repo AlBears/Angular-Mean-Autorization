@@ -12,7 +12,10 @@ var authenticate = (req, res, next) => {
       req.token = token;
       next();
     }).catch((e) => {
-      res.status(401).send('User is not authenticated');
+      res.status(401).json({ 
+        title: 'Authentication failed',
+        error: { message:'User is not authenticated' }
+      });
     });
 };
 

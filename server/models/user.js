@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 var validator = require('validator');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
+var mongooseUniqueValidator = require('mongoose-unique-validator');
 
 
 var schema = new Schema({
@@ -89,5 +90,5 @@ schema.pre('save', function(next) {
         next();
     }
 })
-
+schema.plugin(mongooseUniqueValidator);
 module.exports = mongoose.model('User', schema);
