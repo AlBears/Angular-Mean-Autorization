@@ -13,6 +13,7 @@ import { HeaderComponent } from './header.component';
 import { LogoutComponent } from './auth/logout.component';
 import { SigninComponent } from './auth/signin.component';
 import { SignupComponent } from './auth/signup.component';
+import { ErrorComponent } from './errors/error.component';
 
 import { AuthService } from './auth/auth.service';
 
@@ -37,7 +38,8 @@ import { AppRoutingModule } from './app.routing';
                   HeaderComponent,
                   LogoutComponent,
                   SigninComponent,
-                  SignupComponent
+                  SignupComponent,
+                  ErrorComponent
                 ],
   providers:    [ AuthService ],
   bootstrap:    [ AppComponent ]
